@@ -1,82 +1,117 @@
-import Head from 'next/head'
+import Head from "next/head";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+import {
+	XmediumCard,
+	SmallCard,
+	MediumCard,
+	LargeCard,
+	Header,
+	Footer,
+	Banner,
+} from "../components";
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+export default function Home({ exploreData, cardsData }) {
+	const imgs = [
+		{
+			img: "https://a0.muscache.com/im/pictures/ad109d56-2421-40cd-98e6-e114160dc85b.jpg?im_w=480",
+			title: "experiences",
+			description: "find unforgettable activities near you.",
+		},
+		{
+			img: "https://a0.muscache.com/im/pictures/0ce799cb-7553-4369-be9e-d0011e0ef636.jpg?im_w=480",
+			title: "Online Experiences",
+			description: "live, interactive activities led by Hosts.",
+		},
+		{
+			img: "https://a0.muscache.com/im/pictures/247a1ea3-946d-4eb8-a6ab-e8b9a66846f4.jpg?im_w=480",
+			title: "Featured collection: Wanderlust",
+			description: "Travel from home with online Experiences.",
+		},
+	];
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
+	return (
+		<div className="">
+			<Head>
+				<title>G-dev Airbnb</title>
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
+			<Header />
+			<Banner />
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
+			<main className="max-w-7xl mx-auto  px-8 sm:px-16">
+				<section className="pt-6 ">
+					<h2 className="text-4xl font-semibold pb-5">Explore Nearby</h2>
+					{/* pull some data form the server  */}
 
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+						{exploreData?.map(({ img, distance, location }) => (
+							<SmallCard
+								key={img}
+								img={img}
+								distance={distance}
+								location={location}
+							/>
+						))}
+					</div>
+				</section>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+				<section>
+					<h2 className="text-4xl font-semibold py-8">Live Anywhere</h2>
+					<div
+						className="flex space-x-3 overflow-scroll scrollbar-hide
+					p-3 -ml-3"
+					>
+						{cardsData?.map(({ img, title }) => (
+							<MediumCard key={img} img={img} title={title} />
+						))}
+					</div>
+				</section>
+				<div>
+					<LargeCard
+						// img="https://links.papareact.com/4cj"
+						img="https://a0.muscache.com/im/pictures/2595054e-d1d9-4fde-8046-58d51fcb3164.jpg?im_w=1440"
+						title="Try hosting"
+						description="Earn extra income and unlock new opportunities by sharing your space."
+						buttonText="Learn more"
+					/>
+				</div>
+				<section>
+					<h2 className="text-4xl font-semibold py-8 ">
+						Discover things to do
+					</h2>
+					<div
+						className="flex flex-grow space-x-10 pb-8 overflow-scroll scrollbar-hide
+					p-3 -ml-3 cursor-pointer "
+					>
+						{imgs?.map((item, index) => (
+							<XmediumCard
+								key={index}
+								img={item.img}
+								title={item.title}
+								description={item.description}
+							/>
+						))}
+					</div>
+				</section>
+			</main>
+			<Footer />
+		</div>
+	);
+}
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+export async function getStaticProps() {
+	const exploreData = await fetch("https://links.papareact.com/pyp").then(
+		(res) => res.json()
+	);
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
-    </div>
-  )
+	const cardsData = await fetch("https://links.papareact.com/zp1").then((res) =>
+		res.json()
+	);
+
+	return {
+		props: {
+			exploreData,
+			cardsData,
+		},
+	};
 }

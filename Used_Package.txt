@@ -1,0 +1,12 @@
+package, library used:
+
+*********************************************
+mapbox,
+geolib,
+react-date-range,
+Tailwind css, 
+heroIcon,
+date-fns,
+@badrap,
+ReactMapGL,
+react-date-range
